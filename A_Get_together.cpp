@@ -22,7 +22,7 @@ using namespace std;
 /*
     Learning Points 
     
-    Convex Hull ===> Ternary Search          \_/
+    Convex Hull ===> Ternary Search          \_/  
 
     Some good implementation which should be remembered
 
@@ -44,7 +44,7 @@ using namespace std;
 
 
 bool check(double mid,int n,vector<pair<double,double>>&a){
-    //Here the main part comes which i should learn
+    //Here comes the main part comes which i should learn
     pair<double,double>curr = {-1e18,1e18};
     for(auto it:a){
         double pos = it.first;
