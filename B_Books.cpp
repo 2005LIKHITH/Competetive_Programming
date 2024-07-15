@@ -21,6 +21,8 @@ using namespace std;
 
 // standard Binary Search on Answer Which is here no of Consecutive Books
 
+/*
+
 int check(int mid,vi &a,int n,int t){
     int sum = 0;
     for(int i=0; i < n; i++){
@@ -50,4 +52,28 @@ int32_t main(){
         else h = mid-1;
     }
     cout<<ans;
+}
+
+*/
+
+int32_t main(){
+    ff();
+    int n,k;
+    cin>>n>>k;
+    vi a(n,0);
+    input(0,n,a);
+    int sum = 0;
+    int ans = 0;
+    int head = 0;
+    int tail = 0;
+
+    for(head = 0; head < n; head++){
+        sum += a[head];
+        while(tail <= head and sum > k){
+            sum -= a[tail];
+            tail++;
+        }
+        if(sum <= k)ans = max(ans,head-tail+1);
+    }
+    cout<<ans<<nl;
 }
