@@ -1,43 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-//Speed
-#define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
-
-//Define
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
 #define pyes cout << "YES";
 #define pno cout << "NO";
-
+#define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 #define all(x) (x).begin(), (x).end()
-#define MOD (int)(1e9 + 7)
-#define MOD1 998244353
+#define mod (int)(1e9 + 7)
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
 #define sz(a) (int) a.size()
-
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
 #define pi (3.141592653589)
 #define INF 1e18
 #define nl '\n'
-
 //------------------------------------------------------------------------------------------------------------------
-
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
-
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 
-int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
-
 // To get All Prime Factors
-
-// XOR(A to B)=XOR(0 to B)⊕XOR(0 to A−1)
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -67,47 +52,46 @@ vi sieve(int limit) {
     }
     return primes;
 }
-//Get Binary 
-
-string getBinary(int n){
-    bitset<8>b(n);
-    return b.to_string();
-}
-// Kandanes
-int maxSubarraySum(int arr[], int n) {
-    int maxi = INT_MIN; // maximum sum
-    int sum = 0;
-
-    for (int i = 0; i < n; i++) {
-        sum += arr[i];
-
-        if (sum > maxi) {
-            maxi = sum;
-        }
-
-        // If sum < 0: discard the sum calculated
-        if (sum < 0) {
-            sum = 0;
-        }
-    }
-    return maxi;
-}
-
 void solve(){
-    int n;
-    cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
-    }
-    f(i,n/2,n){
-        b += (1 << i);
-    }
-    cout<<abs(a-b);
+    string s;
+    cin>>s;
+    //if the comparing the first odd number with the first even number and creating a string
 
+    string ans = "";
+
+    string odd = "";
+    string even = "";
+    for(auto it: s){
+        if((it-'0')%2)odd += it;
+        else even += it;
+    }
+    int p1 = 0,p2 = 0;
+    while(p1 < even.size() && p2 < odd.size()){
+        if(odd[p2]-'0' < even[p1]-'0'){
+            
+            ans += odd[p2];
+            p2++;
+        }
+        else{
+            ans+= even[p1];
+            p1++;
+        }
+    }
+
+        while(p1 < even.size()){
+            ans += even[p1];
+            p1++;
+        }
+        while(p2 < odd.size()){
+            ans += odd[p2];
+            p2++;
+        }
+    
+    cout<<ans;
+
+    //Just Like Merge Sort
 }
+
 
 int32_t main(){
     ff();

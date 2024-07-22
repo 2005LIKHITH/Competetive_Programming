@@ -18,36 +18,29 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 
-
 void solve(){
-    int n,k;
-    cin>>n>>k;
+    int n,k,d;
+    cin>>n>>k>>d;
     vi a(n,0);
     input(0,n,a);
-    vi b(n,0);
-    input(0,n,b);
-    
-    int tail = 0;
-    int sum = 0;
-    int ans = 0;
-
-    for(int head = 0; head < n; head++){
-        if(head > 0 && b[head-1]%b[head] != 0)sum = 0,tail = head;
-        
-        sum += a[head];
-
-        while(tail <= head && sum > k){
-            sum -= a[tail];
-            tail++;
+    //Kind of fixed size sliding window and set
+    int ans = 1e9;
+    map<int,int>mp;
+    for(int i=0; i < n; i++){
+        mp[a[i]]++;
+        if(i >= d){
+            mp[a[i-d]]--;
+            if(mp[a[i-d]] == 0)mp.erase(a[i-d]);
         }
-        ans = max(ans,head-tail+1);
-
+        if(i >= d-1){
+            int t = mp.size();
+            ans = min(ans,t);
+        }
     }
     cout<<ans;
 }
 
 int32_t main(){
-    ff();
     int tc;
     cin>>tc;
     while(tc--){

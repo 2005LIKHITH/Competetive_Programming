@@ -27,7 +27,7 @@ using namespace std;
 
 //------------------------------------------------------------------------------------------------------------------
 
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
+// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
 
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
@@ -36,8 +36,6 @@ int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + 
 int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 
 // To get All Prime Factors
-
-// XOR(A to B)=XOR(0 to B)⊕XOR(0 to A−1)
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -68,7 +66,6 @@ vi sieve(int limit) {
     return primes;
 }
 //Get Binary 
-
 string getBinary(int n){
     bitset<8>b(n);
     return b.to_string();
@@ -92,29 +89,28 @@ int maxSubarraySum(int arr[], int n) {
     }
     return maxi;
 }
-
-void solve(){
+void solve() {
     int n;
     cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
-    }
-    f(i,n/2,n){
-        b += (1 << i);
-    }
-    cout<<abs(a-b);
+    vi a(n+1,0);
+    input(1,n+1,a);
 
+    for(int i=1; i <= n; i++){
+        if(a[i] <= n && i == a[a[i]]){
+            cout<<2;
+            return;
+        }
+    }
+    cout<<3;
 }
 
-int32_t main(){
+int32_t main() {
     ff();
     int tc;
-    cin>>tc;
-    while(tc--){
+    cin >> tc;
+    while (tc--) {
         solve();
         cout<<nl;
     }
+    return 0;
 }

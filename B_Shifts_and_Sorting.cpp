@@ -27,7 +27,7 @@ using namespace std;
 
 //------------------------------------------------------------------------------------------------------------------
 
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
+// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
 
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
@@ -36,8 +36,6 @@ int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + 
 int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 
 // To get All Prime Factors
-
-// XOR(A to B)=XOR(0 to B)⊕XOR(0 to A−1)
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -68,7 +66,6 @@ vi sieve(int limit) {
     return primes;
 }
 //Get Binary 
-
 string getBinary(int n){
     bitset<8>b(n);
     return b.to_string();
@@ -92,29 +89,44 @@ int maxSubarraySum(int arr[], int n) {
     }
     return maxi;
 }
+void solve() {
+    string s;
+    cin>>s;
+    int n = sz(s);
+    // int firstOne = 0;
+    // int cnt = 0;
+    // bool flag = true;
+    // for(int i=0; i < n-1; i++){
+    //     if(s[i] == '1' && s[i+1] == '0'){
+    //         cnt += (i+1-firstOne+1);
+    //         if(flag)firstOne = i;
+            
+    //     }
 
-void solve(){
-    int n;
-    cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
-    }
-    f(i,n/2,n){
-        b += (1 << i);
-    }
-    cout<<abs(a-b);
+    int cnt = 0;
 
+    int ans = 0;
+    for(int i=0; i < n; i++){
+        if(s[i] == '1')cnt++;
+        else if(cnt == 0)continue;
+        else ans += (cnt+1);
+    }
+
+        
+    //01234567
+    // 01101001
+    //first = 0 cnt = 0
+    cout<<ans;
 }
 
-int32_t main(){
+
+int32_t main() {
     ff();
     int tc;
-    cin>>tc;
-    while(tc--){
+    cin >> tc;
+    while (tc--) {
         solve();
         cout<<nl;
     }
+    return 0;
 }

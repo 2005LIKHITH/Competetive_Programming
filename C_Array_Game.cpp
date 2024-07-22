@@ -93,20 +93,43 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-void solve(){
-    int n;
-    cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
-    }
-    f(i,n/2,n){
-        b += (1 << i);
-    }
-    cout<<abs(a-b);
 
+
+void solve() {
+    int n, k;
+    cin >> n >> k;
+    vi a(n);
+    input(0, n, a);
+    sort(all(a));
+
+    int ans = a[0];
+    if (k > 2) {
+        cout << 0;
+    } else if (k == 1) {
+        ans = a[n - 1] - a[0]; // Initialize with maximum possible difference
+        f(i, 1, n) {
+            ans = min(ans, a[i] - a[i - 1]);
+        }
+        cout << ans;
+    } else {
+        vi minis;
+        f(i, 1, n) {
+            minis.push_back(a[i] - a[i - 1]);
+        }
+        sort(all(minis));
+        ans = minis[0];
+        f(i, 0, n) {
+            auto lb = lower_bound(all(a), minis[i]);
+            if (lb != a.end()) {
+                ans = min(ans, abs(*lb - minis[i]));
+            }
+            if (lb != a.begin()) {
+                lb--;
+                ans = min(ans, abs(*lb - minis[i]));
+            }
+        }
+        cout << ans;
+    }
 }
 
 int32_t main(){

@@ -18,40 +18,33 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 
-
-void solve(){
+int32_t main(){
+    ff();
     int n,k;
     cin>>n>>k;
     vi a(n,0);
     input(0,n,a);
-    vi b(n,0);
-    input(0,n,b);
-    
-    int tail = 0;
-    int sum = 0;
+
     int ans = 0;
+    int j = 0;
+    int maxi = 0;
+    int mini = 0;
+    map<int,int>mp;
+    for(int i=0; i < n; i++){
+        mp[a[i]]++;
+        maxi = mp.rbegin()->first;
+        mini = mp.begin()->first;
 
-    for(int head = 0; head < n; head++){
-        if(head > 0 && b[head-1]%b[head] != 0)sum = 0,tail = head;
-        
-        sum += a[head];
-
-        while(tail <= head && sum > k){
-            sum -= a[tail];
-            tail++;
+        while(j <= i && maxi-mini > k){
+            int el = a[j];
+            mp[a[j]]--;
+            if(mp[a[j]] == 0)mp.erase(a[j]);
+            maxi = mp.rbegin()->first;
+            mini = mp.begin()->first;
+            j++;
         }
-        ans = max(ans,head-tail+1);
-
+        ans += (i-j+1);
+        
     }
     cout<<ans;
-}
-
-int32_t main(){
-    ff();
-    int tc;
-    cin>>tc;
-    while(tc--){
-        solve();
-        cout<<nl;
-    }
 }

@@ -18,34 +18,28 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 
-
 void solve(){
-    int n,k;
-    cin>>n>>k;
-    vi a(n,0);
-    input(0,n,a);
-    vi b(n,0);
-    input(0,n,b);
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    int count1 = 0;
+    for(auto it: s)if(it == '1')count1++;
+    int count0 = 0;
+    bool segment = false; 
     
-    int tail = 0;
-    int sum = 0;
-    int ans = 0;
-
-    for(int head = 0; head < n; head++){
-        if(head > 0 && b[head-1]%b[head] != 0)sum = 0,tail = head;
-        
-        sum += a[head];
-
-        while(tail <= head && sum > k){
-            sum -= a[tail];
-            tail++;
+    for (auto ch : s) {
+        if (ch == '0' && !segment) {
+            segment = true;
+            count0++; 
+        } else if (ch == '1') {
+            segment = false; 
         }
-        ans = max(ans,head-tail+1);
-
     }
-    cout<<ans;
-}
+    if(count1 > count0)cout<<"Yes";
+    else cout<<"No";
 
+}
 int32_t main(){
     ff();
     int tc;

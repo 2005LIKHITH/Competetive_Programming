@@ -27,7 +27,7 @@ using namespace std;
 
 //------------------------------------------------------------------------------------------------------------------
 
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
+// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
 
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
@@ -36,8 +36,6 @@ int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + 
 int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 
 // To get All Prime Factors
-
-// XOR(A to B)=XOR(0 to B)⊕XOR(0 to A−1)
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -68,7 +66,6 @@ vi sieve(int limit) {
     return primes;
 }
 //Get Binary 
-
 string getBinary(int n){
     bitset<8>b(n);
     return b.to_string();
@@ -93,28 +90,43 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
+
 void solve(){
-    int n;
-    cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
+    int n,m;
+    cin>>n>>m;
+    vector<vector<int>>a(n,vector<int>(m,0));
+    //swapping se kch nahi hoga itna complex matkro 
+
+    // Think more code less
+
+    for(int i=0; i < n; i++){
+        for(int j=0; j < m; j++){
+            cin>>a[i][j];
+        }
     }
-    f(i,n/2,n){
-        b += (1 << i);
+    if(n*m == 1){
+        cout<<-1<<nl;
+        return;
     }
-    cout<<abs(a-b);
+    for(int i=0; i < n; i++){
+        for(int j=0; j < m; j++){
+            if(a[i][j] == 1){
+                cout<<n*m<<" ";
+            }
+            else{
+                cout<<a[i][j]-1<<" ";
+            }
+        }
+        cout<<nl;
+    }
 
 }
 
 int32_t main(){
-    ff();
     int tc;
     cin>>tc;
     while(tc--){
         solve();
-        cout<<nl;
+       
     }
 }

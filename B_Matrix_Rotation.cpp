@@ -1,16 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-//Speed
-#define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
-
-//Define
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
 #define pyes cout << "YES";
 #define pno cout << "NO";
-
+#define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
 #define MOD1 998244353
@@ -18,7 +13,6 @@ using namespace std;
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
 #define sz(a) (int) a.size()
-
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
 #define pi (3.141592653589)
@@ -73,43 +67,23 @@ string getBinary(int n){
     bitset<8>b(n);
     return b.to_string();
 }
-// Kandanes
-int maxSubarraySum(int arr[], int n) {
-    int maxi = INT_MIN; // maximum sum
-    int sum = 0;
-
-    for (int i = 0; i < n; i++) {
-        sum += arr[i];
-
-        if (sum > maxi) {
-            maxi = sum;
-        }
-
-        // If sum < 0: discard the sum calculated
-        if (sum < 0) {
-            sum = 0;
-        }
-    }
-    return maxi;
-}
 
 void solve(){
-    int n;
-    cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
+    vector<vector<int>>a(2,vector<int>(2,0));
+    for(int i=0; i < 2; i++){
+        for(int j=0; j < 2; j++){
+            cin>>a[i][j];
+        }
     }
-    f(i,n/2,n){
-        b += (1 << i);
-    }
-    cout<<abs(a-b);
+    //Question sahi se  pado bc
 
+    if((a[0][0] > a[1][0] == a[0][1] > a[1][1]) && (a[0][0] > a[0][1] == a[1][0] > a[1][1]))pyes
+    else pno
 }
 
+
 int32_t main(){
+
     ff();
     int tc;
     cin>>tc;

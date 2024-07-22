@@ -27,7 +27,7 @@ using namespace std;
 
 //------------------------------------------------------------------------------------------------------------------
 
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
+// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
 
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
@@ -36,8 +36,6 @@ int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + 
 int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 
 // To get All Prime Factors
-
-// XOR(A to B)=XOR(0 to B)⊕XOR(0 to A−1)
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -68,7 +66,6 @@ vi sieve(int limit) {
     return primes;
 }
 //Get Binary 
-
 string getBinary(int n){
     bitset<8>b(n);
     return b.to_string();
@@ -92,27 +89,70 @@ int maxSubarraySum(int arr[], int n) {
     }
     return maxi;
 }
-
 void solve(){
-    int n;
-    cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
-    }
-    f(i,n/2,n){
-        b += (1 << i);
-    }
-    cout<<abs(a-b);
+    int n,m;
+    cin>>n>>m;
+    vi a(n);
+    input(0,n,a);
+    cout<<n/m<<" ";
+    vi freq(20005,0);
+    // for(int i=0; i < sz(a); i++){
+    //     freq[a[i]]++;
+    // }
+    int cnt = 0;
+    vi bin;
+    // for(int i=0; i < n; i++){
+    //     if(a[i] > m)bin.push_back(a[i]);
+    // } To solve indexing issues m is only going to be upto 20000 so
+    // for(int i=0; i < n; i++){
+    //     if(a[i] > n/m)bin.push_back(a[i]);
+    //     else if(freq[a[i]] > n/m)bin.push_back(a[i]);
+    //     else freq[a[i]]++;
+    // }
+    // for(int i=1; i <= m; i++){
+    //     if(freq[a[i]] < n/m){
+    //         while((freq[a[i]] < n/m)){
+    //             cnt++;
+    //             freq[a[i]]++;
+    //             bin.pop_back();
+    //         }
+    //     }
+    // }
+    // cout<<cnt<<nl;
+    // // for(auto it:freq)cout<<it<<" ";
+    // for(int i=1; i <= m; i++){
+    //      int t = freq[i];
+    //      while(t--){
+    //         cout<<i<<" ";
+    //     }
+    // }
+    //Our approach not working because we need to have the idnexes
 
+
+    for(int i=0; i < n; i++){
+        if(a[i] > m)bin.push_back(i);
+        else if(freq[a[i]] == n/m)bin.push_back(i);
+        else {
+            freq[a[i]]++;
+        }
+    }
+    for(int i=1; i <= m; i++){
+        while(freq[i] < n/m){
+            int t = bin.back();
+            bin.pop_back();
+            a[t]=i;
+            cnt++;
+            freq[i]++;
+        }
+    }
+    cout<<cnt<<nl;
+    for(auto it: a)cout<<it<<" ";
 }
 
 int32_t main(){
-    ff();
     int tc;
-    cin>>tc;
+    //cin>>tc;
+    tc = 1;
     while(tc--){
         solve();
         cout<<nl;

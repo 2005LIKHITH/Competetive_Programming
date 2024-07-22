@@ -19,32 +19,13 @@ using namespace std;
 #define nl '\n'
 
 
-void solve(){
+void solve() {
     int n,k;
     cin>>n>>k;
-    vi a(n,0);
-    input(0,n,a);
-    vi b(n,0);
-    input(0,n,b);
-    
-    int tail = 0;
-    int sum = 0;
-    int ans = 0;
+    cout<<(n-1+k-1-1)/(k-1);
 
-    for(int head = 0; head < n; head++){
-        if(head > 0 && b[head-1]%b[head] != 0)sum = 0,tail = head;
-        
-        sum += a[head];
-
-        while(tail <= head && sum > k){
-            sum -= a[tail];
-            tail++;
-        }
-        ans = max(ans,head-tail+1);
-
-    }
-    cout<<ans;
 }
+
 
 int32_t main(){
     ff();

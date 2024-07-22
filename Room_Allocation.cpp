@@ -27,7 +27,7 @@ using namespace std;
 
 //------------------------------------------------------------------------------------------------------------------
 
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
+// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
 
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
@@ -36,8 +36,6 @@ int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + 
 int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 
 // To get All Prime Factors
-
-// XOR(A to B)=XOR(0 to B)⊕XOR(0 to A−1)
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -68,7 +66,6 @@ vi sieve(int limit) {
     return primes;
 }
 //Get Binary 
-
 string getBinary(int n){
     bitset<8>b(n);
     return b.to_string();
@@ -92,27 +89,54 @@ int maxSubarraySum(int arr[], int n) {
     }
     return maxi;
 }
-
-void solve(){
+bool cmp1(pair<pair<int,int>,int>a,pair<pair<int,int>,int>b){
+    if(a.first.second != b.first.second){
+        return a.first.second < b.first.second;
+    }
+    return a.first.first > b.first.first;
+}
+void solve() {
     int n;
     cin>>n;
-    int a =0;
-    int b = 0;
-    a += (1 << n);
-    f(i, 1,n/2){
-        a += (1 << i);
+    // Applying intution
+
+    vector<pair<pair<int,int>,int>>a(n);
+    for(int i=0; i < n; i++){
+        int p,q;
+        cin>>p>>q;
+        a[i] = {{p,q},{i}};
     }
-    f(i,n/2,n){
-        b += (1 << i);
+    sort(all(a),[&](auto a,auto b){
+        return a.first < b.first;
+    });
+    set<pair<int,int>>st;// last index index
+    //when the arrival inde is greater than the last index
+    int cnt = 0;
+    //we also need to store the respective room number
+    vi rez(n,0);
+    for(int i=0; i < n; i++){
+        int roomNo = 0;
+        if(st.empty() || st.begin()->first > a[i].first.first){
+            cnt++;
+            roomNo = cnt;
+        }else{
+            roomNo = st.begin()->second;
+            st.erase(st.begin());
+        }
+
+        st.insert({a[i].first.second+1,roomNo});
+        rez[a[i].second]=roomNo;
     }
-    cout<<abs(a-b);
+    cout<<cnt<<nl;
+    for(auto it: rez)cout<<it<<" ";
 
 }
 
 int32_t main(){
     ff();
     int tc;
-    cin>>tc;
+    // cin>>tc;
+    tc = 1;
     while(tc--){
         solve();
         cout<<nl;
