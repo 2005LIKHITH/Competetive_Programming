@@ -17,7 +17,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -93,30 +93,20 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
+bool cmp(pair<int,int>&a,pair<int,int>&b){
+    return a.second < b.second;
+}
 
 void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
-        return;
+    vector<pair<int,int>>Coordinates;
+    for(int i=0; i < 4; i++){
+        int a,b;
+        cin>>a>>b;
+        Coordinates.push_back({a,b});
     }
-    int ans = 0;
-    
-    k = k-n;
-    n--;
-    ++ans;
-
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
-        }
-        n--;
-    }
-    cout<<ans<<nl;
+    sort(all(Coordinates),cmp);
+    int p = abs(Coordinates[0].first-Coordinates[1].first);
+    cout<<p*p<<nl;
 }
 
 int32_t main() {
@@ -125,7 +115,6 @@ int32_t main() {
     cin >> tc;
     while (tc--) {
         solve();
-        // cout << nl;
     }
     return 0;
 }

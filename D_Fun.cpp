@@ -17,7 +17,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -25,6 +25,7 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 #define sp " "
+
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -93,31 +94,19 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-
 void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
-        return;
-    }
-    int ans = 0;
-    
-    k = k-n;
-    n--;
-    ++ans;
-
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
+    int n , x;
+    cin >> n >> x;
+    int rez = 0;
+    for(int a=1; a <= min(x,n); a++){
+        for(int b=1; a*b <= n && a+b <= x; b++){
+            rez+=min((x-a-b),((n-a*b)/(a+b)));
         }
-        n--;
     }
-    cout<<ans<<nl;
+    cout<<rez<<nl;
 }
+
+
 
 int32_t main() {
     ff();
@@ -125,7 +114,6 @@ int32_t main() {
     cin >> tc;
     while (tc--) {
         solve();
-        // cout << nl;
     }
     return 0;
 }

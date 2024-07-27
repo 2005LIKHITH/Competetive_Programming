@@ -17,7 +17,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -95,28 +95,29 @@ int maxSubarraySum(int arr[], int n) {
 
 
 void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
+    int n;
+    cin>>n;
+    string s1,s2;
+    cin>>s1>>s2;
+    int need = 0;//4
+    int reserve = 0;
+    for(int i=0; i < n; i++){
+        if(s1[i] == '1' && s2[i] == '0')reserve++;
+        else if(s1[i] == '0' && s2[i] == '1')need++;
+    }
+    if(need == reserve){
+        cout<<need<<'\n';
         return;
     }
-    int ans = 0;
-    
-    k = k-n;
-    n--;
-    ++ans;
-
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
-        }
-        n--;
+    if(need < reserve){
+        int p = reserve-need;
+        cout<<(need+p)<<'\n';
     }
-    cout<<ans<<nl;
+    else if(need > reserve){
+        int p = need-reserve;
+        cout<<p+reserve<<'\n';
+    }
+
 }
 
 int32_t main() {
@@ -125,7 +126,6 @@ int32_t main() {
     cin >> tc;
     while (tc--) {
         solve();
-        // cout << nl;
     }
     return 0;
 }

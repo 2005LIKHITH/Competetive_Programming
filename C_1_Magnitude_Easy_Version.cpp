@@ -5,7 +5,9 @@ using namespace std;
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 // Define
+
 #define int long long int
+#define ll int
 #define vi vector<int>
 #define vc vector<char>
 #define pyes cout << "YES";
@@ -17,7 +19,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -25,6 +27,10 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 #define sp " "
+const ll M = 1e9+9;
+const ll BASE1 = 5689;
+const ll BASE2 = 8861;
+
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -92,32 +98,34 @@ int maxSubarraySum(int arr[], int n) {
     }
     return maxi;
 }
+// Hash Function
 
-
-void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
-        return;
-    }
-    int ans = 0;
-    
-    k = k-n;
-    n--;
-    ++ans;
-
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
+struct Hash {
+    vector<pair<ll,ll>> hashes, po;
+    Hash(string s) {
+        hashes.assign(s.size() + 1, {1, 1});
+        po.assign(s.size() + 1, {1, 1});
+        for (ll i = 0; i < (ll)s.size(); i++) {
+            hashes[i + 1] = {
+                (hashes[i].first * BASE1 + (s[i] - 'a' + 1)) % M,
+                (hashes[i].second * BASE2 + (s[i] - 'a' + 1)) % M
+            };
+            po[i + 1] = {
+                (po[i].first * BASE1) % M,
+                (po[i].second * BASE2) % M
+            };
         }
-        n--;
     }
-    cout<<ans<<nl;
-}
+ 
+    pair<ll, ll> get(ll l, ll r) {
+        l++, r++;
+        ll hash1 = (hashes[r].first - (hashes[l - 1].first * po[r - l + 1].first) % M + M) % M;
+        ll hash2 = (hashes[r].second - (hashes[l - 1].second * po[r - l + 1].second) % M + M) % M;
+        return {hash1, hash2};
+    }
+};
+
+
 
 int32_t main() {
     ff();
@@ -125,7 +133,6 @@ int32_t main() {
     cin >> tc;
     while (tc--) {
         solve();
-        // cout << nl;
     }
     return 0;
 }

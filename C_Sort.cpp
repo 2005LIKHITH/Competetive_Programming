@@ -17,7 +17,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -25,6 +25,7 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 #define sp " "
+
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -93,30 +94,45 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
+void solve() {
 
-void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
-        return;
-    }
-    int ans = 0;
-    
-    k = k-n;
-    n--;
-    ++ans;
+    // kind of perfix Sums Cses Range queries 
+    //MLE ki mkc
+    int n, q;
+    cin>>n>> q;
 
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
+    string a,b;
+    cin>>a>>b;
+    vector<vector<int>> prefA(n + 1, vector<int>(26, 0));
+    vector<vector<int>> prefB(n + 1, vector<int>(26, 0));
+
+    for (int i = 1; i <= n; i++) { 
+        for (int j = 0; j < 26; j++) {
+            prefA[i][j] = prefA[i - 1][j];
+            prefB[i][j] = prefB[i - 1][j];
         }
-        n--;
+        prefA[i][a[i - 1] - 'a']++;
+        prefB[i][b[i - 1]- 'a']++;
     }
-    cout<<ans<<nl;
+
+    while (q--) {
+        int l, r;
+        cin >>l>>r;
+        l--; r--;
+        vector<int> f1(27, 0), f2(27, 0);
+        for (int i = 0; i < 26; i++) {
+            f1[i] = prefA[r + 1][i] - prefA[l][i];
+            f2[i] = prefB[r + 1][i] - prefB[l][i];
+        }
+
+        int cnt = 0;
+        for (int i = 0; i < 26; i++) {
+            if (f1[i] > f2[i]) {
+                cnt += (f1[i] - f2[i]);
+            }
+        }
+        cout<<cnt<<nl;
+    }
 }
 
 int32_t main() {
@@ -125,7 +141,8 @@ int32_t main() {
     cin >> tc;
     while (tc--) {
         solve();
-        // cout << nl;
     }
     return 0;
 }
+
+

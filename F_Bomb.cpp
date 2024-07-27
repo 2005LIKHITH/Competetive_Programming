@@ -8,8 +8,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES\n";
+#define pno cout << "NO\n";
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -17,7 +17,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -93,30 +93,39 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-
-void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
-        return;
+bool check(int mid, vi &a, vi &b, int k) {
+    priority_queue<pair<int, int>> pq;
+    for (int i = 0; i < a.size(); ++i) {
+        pq.push({a[i], i});
     }
     int ans = 0;
-    
-    k = k-n;
-    n--;
-    ++ans;
-
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
-        }
-        n--;
+    while (k--) {
+        auto top = pq.top();
+        pq.pop();
+        ans += top.first;
+        if (ans >= mid) return true;
+        pq.push({max(0LL, top.first - b[top.second]), top.second});
     }
-    cout<<ans<<nl;
+    return ans >= mid;
+}
+
+void solve() {
+    int n, k;
+    cin >> n >> k;
+    vi a(n);
+    vi b(n);
+    input(0, n, a);
+    input(0, n, b);
+
+    int l = 0;
+    int h = *max_element(all(a)) * k;
+    int ans = -1;
+    while (l <= h) {
+        int mid = (l + h) / 2;
+        if (check(mid, a, b, k)) ans = mid, l = mid + 1;
+        else h = mid - 1;
+    }
+    cout << ans << nl;
 }
 
 int32_t main() {
@@ -125,7 +134,6 @@ int32_t main() {
     cin >> tc;
     while (tc--) {
         solve();
-        // cout << nl;
     }
     return 0;
 }

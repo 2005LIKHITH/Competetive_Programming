@@ -5,11 +5,12 @@ using namespace std;
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 // Define
+
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES" << nl;
+#define pno cout << "NO" << nl;
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -17,7 +18,7 @@ using namespace std;
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
 #define rf(i, x, n) for (int i = x; i >= n; i--)
-#define sz(a) (int) a.size()
+#define sz(a) (int)a.size()
 
 #define ppc __builtin_popcount
 #define ppcll __builtin_popcountll
@@ -25,6 +26,10 @@ using namespace std;
 #define INF 1e18
 #define nl '\n'
 #define sp " "
+
+const int M = 1e9+9;
+const int BASE1 = 5689;
+const int BASE2 = 8861;
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -93,39 +98,49 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
+// Hash Function
 
-void solve(){
-    int n,k;
-    cin>>n>>k;
-    if(k == 0){
-        cout<<0<<nl;
-        return;
-    }
-    int ans = 0;
+struct Hash {
+    vector<pair<int, int>> hashes, Pow;
     
-    k = k-n;
-    n--;
-    ++ans;
+    Hash(string s) {
+        hashes.assign(s.size() + 1, make_pair(0, 0));
+        Pow.assign(s.size() + 1, make_pair(1, 1));
 
-    while(k >= 1){
-        k -= n;
-        ans++;
-        if(k > 0){
-            ans++;
-            k-=n;
+        for (int i = 0; i < s.size(); i++) {
+            hashes[i + 1] = make_pair((hashes[i].first * BASE1 + (s[i] - 'a' + 1)) % M,
+                                      (hashes[i].second * BASE2 + (s[i] - 'a' + 1)) % M);
+            Pow[i + 1] = make_pair((Pow[i].first * BASE1) % M,
+                                   (Pow[i].second * BASE2) % M);
         }
-        n--;
     }
-    cout<<ans<<nl;
+
+    pair<int, int> get(int l, int r) {
+        l++, r++;
+        int hash1 = (hashes[r].first - (hashes[l - 1].first * Pow[r - l + 1].first) % M + M) % M;
+        int hash2 = (hashes[r].second - (hashes[l - 1].second * Pow[r - l + 1].second) % M + M) % M;
+        return make_pair(hash1, hash2);
+    }
+};
+
+i solve1() {
+    // we need to binary seraches for even and odd then what we will do is we will take the global maximum one
+
+    string s;
+    cin>>s;
+    int n = sz(s);
+    
 }
+void solve2()
 
 int32_t main() {
     ff();
     int tc;
-    cin >> tc;
+    // cin >> tc;
+    tc = 1;
     while (tc--) {
-        solve();
-        // cout << nl;
+        solve1();
+        solve2();
     }
     return 0;
 }
