@@ -35,6 +35,8 @@ const int BASE2 = 8861;
 
 // XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
 
+// a | b = x  => x < 2*max(a,b)
+
 int mod_add(int a, int b, int m) { a = a % m; b = b % m; return (((a + b) % m) + m) % m; }
 int mod_mul(int a, int b, int m) { a = a % m; b = b % m; return (((a * b) % m) + m) % m; }
 int mod_sub(int a, int b, int m) { a = a % m; b = b % m; return (((a - b) % m) + m) % m; }
@@ -122,27 +124,152 @@ struct Hash {
         return make_pair(hash1, hash2);
     }
 };
-void solve(){
+
+
+
+struct Node
+{
+    int childReferences[26];
+    int stringEndingHere;
+    int stringsEndingBelow;
+    Node()
+    {
+        for (int i = 0; i < 26; i++)
+            childReferences[i] = -1;
+        stringEndingHere = 0;
+        stringsEndingBelow = 0;
+    }
+};
+
+struct Trie
+{
+    int root;
+    vector<Node> nodes;
+    Trie()
+    {
+        root = 0;
+        nodes.push_back(Node());
+    }
+
+    void precomputeSpecialStringsBelow(int currentNode)
+    {
+        nodes[currentNode].stringsEndingBelow = nodes[currentNode].stringEndingHere;
+        for (int i = 0; i < 26; i++)
+        {
+            if (nodes[currentNode].childReferences[i] != -1)
+                nodes[currentNode].stringsEndingBelow += nodes[nodes[currentNode].childReferences[i]].stringsEndingBelow;
+        }
+    }
+
+    void addRecursively(string &a, int currentNode, int index)
+    {
+        if (index == a.size())
+        {
+            nodes[currentNode].stringEndingHere++;
+            precomputeSpecialStringsBelow(currentNode);
+            return;
+        }
+        int child = nodes[currentNode].childReferences[a[index] - 'a'];
+        if (child == -1)
+        {
+            nodes[currentNode].childReferences[a[index] - 'a'] = nodes.size();
+            nodes.push_back(Node());
+            child = nodes[currentNode].childReferences[a[index] - 'a'];
+        }
+        addRecursively(a, child, index + 1);
+        precomputeSpecialStringsBelow(currentNode);
+    }
+
+    void addString(string a)
+    {
+        addRecursively(a, root, 0);
+    }
+
+    bool searchString(string a)
+    {
+        int currentNode = root;
+        for (auto ch : a)
+        {
+            int characterIndex = ch - 'a';
+            if (nodes[currentNode].childReferences[characterIndex] == -1)
+                return false;
+            currentNode = nodes[currentNode].childReferences[characterIndex];
+        }
+        return nodes[currentNode].stringEndingHere > 0;
+    }
+
+    int commonPrefixes(string a)
+    {
+        int currentNode = root;
+        for (auto ch : a)
+        {
+            int characterIndex = ch - 'a';
+            if (nodes[currentNode].childReferences[characterIndex] == -1)
+                return 0;
+            currentNode = nodes[currentNode].childReferences[characterIndex];
+        }
+        return nodes[currentNode].stringsEndingBelow;
+    }
+};
+
+
+
+
+void solve() {
     string s;
     cin>>s;
     int n = sz(s);
 
-    Hash a(s);
-
+    string rez = "";
+    bool flag = false;
     for(int i=0; i < n-1; i++){
-        if(a.get(0,i) == a.get(n-i-1, n-1))cout<<i+1<<sp;
+        if((s[i] == s[i+1]) && flag ==false){
+            rez += s[i];
+            if(s[i] == 'a'){
+                rez += 'b';
+            }
+            else if(s[i] == 'z'){
+                rez += 'y';
+            }
+            else{
+                rez += (s[i]+1);
+            }
+            flag = true;
+        }
+        else{
+            rez += s[i];
+        }
+    }
+    rez += s[n-1];
+
+    if(!flag){
+        if(s[n-1] == 'a'){
+            rez += 'z';
+        }
+        else if(s[n-1] == 'z'){
+            rez += 'y';
+        }
+        else {
+            rez+='z';
+        }
     }
 
-    
+    cout<<rez<<nl;
+
+
+
+
 }
+
+
+
 int32_t main() {
     ff();
     int tc;
-    // cin >> tc;
-    tc = 1;
+    cin >> tc;
+    // tc = 1;
     while (tc--) {
         solve();
-     
     }
     return 0;
 }

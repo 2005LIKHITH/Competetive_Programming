@@ -122,27 +122,133 @@ struct Hash {
         return make_pair(hash1, hash2);
     }
 };
-void solve(){
-    string s;
-    cin>>s;
-    int n = sz(s);
 
-    Hash a(s);
 
-    for(int i=0; i < n-1; i++){
-        if(a.get(0,i) == a.get(n-i-1, n-1))cout<<i+1<<sp;
+
+struct Node
+{
+    int childReferences[26];
+    int stringEndingHere;
+    int stringsEndingBelow;
+    Node()
+    {
+        for (int i = 0; i < 26; i++)
+            childReferences[i] = -1;
+        stringEndingHere = 0;
+        stringsEndingBelow = 0;
+    }
+};
+
+struct Trie
+{
+    int root;
+    vector<Node> nodes;
+    Trie()
+    {
+        root = 0;
+        nodes.push_back(Node());
     }
 
-    
+    void precomputeSpecialStringsBelow(int currentNode)
+    {
+        nodes[currentNode].stringsEndingBelow = nodes[currentNode].stringEndingHere;
+        for (int i = 0; i < 26; i++)
+        {
+            if (nodes[currentNode].childReferences[i] != -1)
+                nodes[currentNode].stringsEndingBelow += nodes[nodes[currentNode].childReferences[i]].stringsEndingBelow;
+        }
+    }
+
+    void addRecursively(string &a, int currentNode, int index)
+    {
+        if (index == a.size())
+        {
+            nodes[currentNode].stringEndingHere++;
+            precomputeSpecialStringsBelow(currentNode);
+            return;
+        }
+        int child = nodes[currentNode].childReferences[a[index] - 'a'];
+        if (child == -1)
+        {
+            nodes[currentNode].childReferences[a[index] - 'a'] = nodes.size();
+            nodes.push_back(Node());
+            child = nodes[currentNode].childReferences[a[index] - 'a'];
+        }
+        addRecursively(a, child, index + 1);
+        precomputeSpecialStringsBelow(currentNode);
+    }
+
+    void addString(string a)
+    {
+        addRecursively(a, root, 0);
+    }
+
+    bool searchString(string a)
+    {
+        int currentNode = root;
+        for (auto ch : a)
+        {
+            int characterIndex = ch - 'a';
+            if (nodes[currentNode].childReferences[characterIndex] == -1)
+                return false;
+            currentNode = nodes[currentNode].childReferences[characterIndex];
+        }
+        return nodes[currentNode].stringEndingHere > 0;
+    }
+
+    int commonPrefixes(string a)
+    {
+        int currentNode = root;
+        for (auto ch : a)
+        {
+            int characterIndex = ch - 'a';
+            if (nodes[currentNode].childReferences[characterIndex] == -1)
+                return 0;
+            currentNode = nodes[currentNode].childReferences[characterIndex];
+        }
+        return nodes[currentNode].stringsEndingBelow;
+    }
+};
+
+void solve() {
+   	int n;cin>>n;
+	string s;cin>>s;
+	
+	if(n<=2){
+		cout<<stoi(s)<<endl;
+		return;
+	}
+	
+	int ans=INT_MAX;
+	
+	for(int i=0;i<n-1;i++){
+		int num=(s[i]-'0')*10+(s[i+1]-'0');
+		
+		for(int j=0;j<n;j++){
+			if(j==i or j-1==i)continue;
+			
+			if(s[j]=='0'){
+				cout<<0<<endl;
+				return;
+			}
+			else if(s[j]!='1'){
+				num=min(num+(s[j]-'0'),num*(s[j]-'0'));
+			}
+		}
+		ans=min(ans,num);
+	}
+	
+	cout<<ans<<endl;
 }
+
+
 int32_t main() {
     ff();
     int tc;
-    // cin >> tc;
-    tc = 1;
+    cin >> tc;
+    // tc = 1;
     while (tc--) {
         solve();
-     
     }
     return 0;
 }

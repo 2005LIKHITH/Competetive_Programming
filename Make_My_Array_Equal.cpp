@@ -5,12 +5,11 @@ using namespace std;
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 // Define
-
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES" << nl;
-#define pno cout << "NO" << nl;
+#define pyes cout << "YES";
+#define pno cout << "NO";
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -27,9 +26,6 @@ using namespace std;
 #define nl '\n'
 #define sp " "
 
-const int M = 1e9+9;
-const int BASE1 = 5689;
-const int BASE2 = 8861;
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -98,51 +94,31 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-// Hash Function
-
-struct Hash {
-    vector<pair<int, int>> hashes, Pow;
-    
-    Hash(string s) {
-        hashes.assign(s.size() + 1, make_pair(0, 0));
-        Pow.assign(s.size() + 1, make_pair(1, 1));
-
-        for (int i = 0; i < s.size(); i++) {
-            hashes[i + 1] = make_pair((hashes[i].first * BASE1 + (s[i] - 'a' + 1)) % M,
-                                      (hashes[i].second * BASE2 + (s[i] - 'a' + 1)) % M);
-            Pow[i + 1] = make_pair((Pow[i].first * BASE1) % M,
-                                   (Pow[i].second * BASE2) % M);
-        }
-    }
-
-    pair<int, int> get(int l, int r) {
-        l++, r++;
-        int hash1 = (hashes[r].first - (hashes[l - 1].first * Pow[r - l + 1].first) % M + M) % M;
-        int hash2 = (hashes[r].second - (hashes[l - 1].second * Pow[r - l + 1].second) % M + M) % M;
-        return make_pair(hash1, hash2);
-    }
-};
 void solve(){
-    string s;
-    cin>>s;
-    int n = sz(s);
-
-    Hash a(s);
-
-    for(int i=0; i < n-1; i++){
-        if(a.get(0,i) == a.get(n-i-1, n-1))cout<<i+1<<sp;
+    int n;
+    cin>>n;
+    vi a(n);
+    input(0,n,a);
+    set<int>st;
+    for(int i=0; i < n; i++){
+        if(a[i] == 0)continue;
+        else st.insert(a[i]);
     }
 
-    
+    if(sz(st) < 2)cout<<"YES"<<nl;
+    else cout<<"NO"<<nl;
+
 }
+
+
+
 int32_t main() {
     ff();
     int tc;
-    // cin >> tc;
-    tc = 1;
+    cin >> tc;
+    // tc = 1;
     while (tc--) {
         solve();
-     
     }
     return 0;
 }

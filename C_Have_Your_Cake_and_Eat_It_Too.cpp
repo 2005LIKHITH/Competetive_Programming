@@ -124,20 +124,82 @@ struct Hash {
         return {hash1, hash2};
     }
 };
+void solve()
+{
+    int n,m;
+    cin>>n;
+    vector<int> a(n+1), b(n+1), c(n+1);
+    int sum=0;
+    for (int i=1;i<=n;i++){
+        cin>>a[i];
+        sum+=a[i];
+    }
+    for (int i=1;i<=n;i++){
+        cin>>b[i];
+    }
+    for (int i=1;i<=n;i++){
+        cin>>c[i];
+    }
+    
+    vector<pair<vector<int>, int>> v;
+    v.push_back({a,1});
+    v.push_back({b,2});
+    v.push_back({c,3});
+    sort(v.begin(),v.end());
+    do {
+        vector<pair<int,int>> ans;
+        int flag1=0,flag2=0, flag3=0;
+        a = v[0].first;
+        b = v[1].first;
+        c = v[2].first;
+        int sum1=0;
+        ans.push_back({v[0].second, 1});
+        ans.push_back({v[0].second, 1});
+        for(int i=1;i<=n;i++){
+            if(!flag1){
+                sum1+=a[i];
+                ans.back().second=i;
+           
+                if(sum1>=(sum+2)/3){
+                    flag1=1;
+                    sum1=0;
+                    ans.push_back({v[1].second,i+1});
+                    ans.push_back({v[1].second,i+1});
+                }
+            }
+            else if(!flag2){
+                sum1+=b[i];
+                ans.back().second=i;
+    
+                if(sum1>=(sum+2)/3){
+                    flag2=1;
+                    ans.push_back({v[2].second,i+1});
+                    ans.push_back({v[2].second,i+1});
+                    sum1=0;
+                }
+            }
+            else {
+                sum1+=c[i];
+                ans.back().second=i;
+      
+                if(sum1>=(sum+2)/3){
+                    flag3=1;
+                }
+            }
+        }
+        if(flag1==1 && flag2==1 && flag3==1){
+           
+            ans.back().second=n;
+            sort(ans.begin(), ans.end());
+            for(auto it:ans){
+                cout<<it.second<<' ';
+            }
+            cout<<'\n';
+            return;
+        }
+    }while(next_permutation(v.begin(),v.end()));
+    cout<<"-1\n";
 
-void solve(){
-    	int n;cin>>n;
-	
-	vector<int>arr(n);
-	for(auto &it:arr)cin>>it;
-	
-	int sum=0,mn=0;
-	for(auto &it:arr){
-	  sum+=it;
-	  mn=min(sum,mn);
-	}
-	cout<<sum-2*mn<<endl;
-	
 }
 
 int32_t main() {

@@ -125,14 +125,21 @@ struct Hash {
 void solve(){
     string s;
     cin>>s;
-    int n = sz(s);
 
     Hash a(s);
+    int n = sz(s);
 
-    for(int i=0; i < n-1; i++){
-        if(a.get(0,i) == a.get(n-i-1, n-1))cout<<i+1<<sp;
+    //Sliding window 
+    for(int i=1; i <= n; i++){
+        //Good Technique For Future reference
+        bool flag = true;
+        int l = i;
+        for(int j=0; j < n; j += l){
+            l = min(i,n-j);
+            flag = flag & (a.get(0,l-1) == a.get(j,j+l-1));
+        }
+        if(flag)cout<<i<<sp;
     }
-
     
 }
 int32_t main() {

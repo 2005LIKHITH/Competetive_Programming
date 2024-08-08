@@ -5,12 +5,11 @@ using namespace std;
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 // Define
-
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES" << nl;
-#define pno cout << "NO" << nl;
+#define pyes cout << "YES";
+#define pno cout << "NO";
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -27,21 +26,12 @@ using namespace std;
 #define nl '\n'
 #define sp " "
 
-const int M = 1e9+9;
-const int BASE1 = 5689;
-const int BASE2 = 8861;
-
-//------------------------------------------------------------------------------------------------------------------
-
-// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
-
 int mod_add(int a, int b, int m) { a = a % m; b = b % m; return (((a + b) % m) + m) % m; }
 int mod_mul(int a, int b, int m) { a = a % m; b = b % m; return (((a * b) % m) + m) % m; }
 int mod_sub(int a, int b, int m) { a = a % m; b = b % m; return (((a - b) % m) + m) % m; }
 
 int expo(int a, int b, int mod) { int res = 1; while (b > 0) { if (b & 1) res = (res * a) % mod; a = (a * a) % mod; b = b >> 1; } return res; }
 
-// To get All Prime Factors
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -56,7 +46,6 @@ vi primeFactorization(int n) {
     return factorization;
 }
 
-// Sieve of Eratosthenes function
 vi sieve(int limit) {
     vi primes;
     vector<bool> is_prime(limit + 1, true);
@@ -72,15 +61,13 @@ vi sieve(int limit) {
     return primes;
 }
 
-// Get Binary 
 string getBinary(int n) {
     bitset<8> b(n);
     return b.to_string();
 }
 
-// Kadane's algorithm
 int maxSubarraySum(int arr[], int n) {
-    int maxi = INT_MIN; // maximum sum
+    int maxi = INT_MIN;
     int sum = 0;
 
     for (int i = 0; i < n; i++) {
@@ -90,7 +77,6 @@ int maxSubarraySum(int arr[], int n) {
             maxi = sum;
         }
 
-        // If sum < 0: discard the sum calculated
         if (sum < 0) {
             sum = 0;
         }
@@ -98,43 +84,28 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-// Hash Function
-
-struct Hash {
-    vector<pair<int, int>> hashes, Pow;
-    
-    Hash(string s) {
-        hashes.assign(s.size() + 1, make_pair(0, 0));
-        Pow.assign(s.size() + 1, make_pair(1, 1));
-
-        for (int i = 0; i < s.size(); i++) {
-            hashes[i + 1] = make_pair((hashes[i].first * BASE1 + (s[i] - 'a' + 1)) % M,
-                                      (hashes[i].second * BASE2 + (s[i] - 'a' + 1)) % M);
-            Pow[i + 1] = make_pair((Pow[i].first * BASE1) % M,
-                                   (Pow[i].second * BASE2) % M);
-        }
-    }
-
-    pair<int, int> get(int l, int r) {
-        l++, r++;
-        int hash1 = (hashes[r].first - (hashes[l - 1].first * Pow[r - l + 1].first) % M + M) % M;
-        int hash2 = (hashes[r].second - (hashes[l - 1].second * Pow[r - l + 1].second) % M + M) % M;
-        return make_pair(hash1, hash2);
-    }
-};
-void solve(){
-    string s;
-    cin>>s;
-    int n = sz(s);
-
-    Hash a(s);
-
-    for(int i=0; i < n-1; i++){
-        if(a.get(0,i) == a.get(n-i-1, n-1))cout<<i+1<<sp;
-    }
-
-    
+bool check(int mid,int h,int w,int n){
+    int x = mid/h;
+    int y = mid/w;
+    return (y > 0 && x >= (n+y));
 }
+void solve(){
+    int h,w,n;
+    cin>>h>>w>>n;
+    int l = 0;
+    int hi = 1e18;
+    int ans = -1;
+    while(l <= hi){
+        int mid = (l+hi)/2;
+        if(check(mid,h,w,n)){
+            ans = mid;
+            hi = mid-1;
+            
+        }else l = mid+1;
+    }
+    cout<<ans<<nl;
+}
+
 int32_t main() {
     ff();
     int tc;
@@ -142,7 +113,6 @@ int32_t main() {
     tc = 1;
     while (tc--) {
         solve();
-     
     }
     return 0;
 }
