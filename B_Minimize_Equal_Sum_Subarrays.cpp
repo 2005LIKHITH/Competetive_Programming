@@ -6,11 +6,10 @@ using namespace std;
 
 // Define
 #define int long long int
-#define db long double
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES"<<'\n';
-#define pno cout << "NO"<<'\n';
+#define pyes cout << "YES" << '\n';
+#define pno cout << "NO" << '\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -84,47 +83,21 @@ int maxSubarraySum(int arr[], int n) {
     }
     return maxi;
 }
-bool check(db mid,vector<db>&a,int n,int k){
-    db cnt = 0;
-    for(int i=0; i < k; i++){
-        cnt += a[i];
-    }
-    return cnt >= 0;
-}
-void solve() {
-    int n,k;
-    cin>>n>>k;
-    vector<pair<int,int>>a(n);
-    for(auto &it : a){
-        cin>>it.first>>it.second;
-    }
-    int iter = 100;
-    db l = 0;
-    db h = 1e18;
-    db ans = -1;
-    for(int i=0; i < iter; i++){
-        db mid = (l+h)/2;
-        vector<db>temp;
-        for(int i=0; i < n; i++){
-            temp.push_back(a[i].first-mid*a[i].second);
-        }
-        sort(all(temp));
-        reverse(all(temp));
-        if(check(mid,temp,n,k)){
-            ans = mid;
-            l = mid;
-        }else h = mid;
-    }
-    cout<<setprecision(10)<<fixed<<ans<<nl;
 
+void solve() {
+    int n;
+    cin >> n; 
+    vi a(n, 0);
+    input(0, n, a);
+    
+    for (int i = 1; i < n; i++) cout << a[i] << " ";
+    cout << a[0] << nl;
 }
 
 int32_t main() {
-    
     ff();
     int tc;
-    // cin >> tc;
-    tc = 1;
+    cin >> tc;
     while (tc--) {
         solve();
     }
