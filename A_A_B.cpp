@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
 #define int long long int
 #define vi vector<int>
@@ -18,6 +20,12 @@ using namespace std;
 #define pi (3.141592653589)
 #define INF 1e18
 #define nl '\n'
+template<class T> using oset =tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update> ;
+
+// And the declaration of it to use it is :-
+// oset<data_type> s;
+
+
 
 //------------------------------------------------------------------------------------------------------------------
 

@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int l = 1e6+5;
+int dp[l];
 
 //Speed
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
@@ -12,7 +14,7 @@ using namespace std;
 #define pno cout << "NO";
 
 #define all(x) (x).begin(), (x).end()
-#define MOD (int)(1e9 + 7)
+#define  MOD (int)(1e9 + 7)
 #define MOD1 998244353
 #define input(start, end, arr) { for(int i = start; i < end; ++i) cin >> arr[i]; }
 #define f(i, x, n) for (int i = x; i < n; i++)
@@ -90,26 +92,20 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-int dp[1000000][100000];
 
-int Rec(int n){
-    if(n < 1)return 0;
-    if(n == 1)return 1;
-
-
-    if(n&1){
-        return 1+2*(Rec(n-1));
-    }
-    else{
-        return 1+(Rec(n-1));
-    }
-}
-void solve() {
+void solve(){
     int n;
     cin>>n;
-    cout<<Rec(n);
-
-
+    memset(dp,0,sizeof(dp));
+    dp[0] = 1;
+    for(int i=1; i <= n; i++){
+        for(int j=1; j <= 6; j++){
+            if(i >= j){
+                dp[i] = (dp[i]+dp[i-j])%MOD;
+            }
+        }
+    }
+    cout<<dp[n]<<nl;
 }
 
 int32_t main(){
