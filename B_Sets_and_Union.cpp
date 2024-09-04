@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -97,23 +98,43 @@ vi findFactors(int x){
 void solve(){
     int n;
     cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
+    vector<vector<int>> a(n);  
+    set<int> st;
+    
+
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        a[i].resize(x);  
+        for (int j = 0; j < x; j++) {
+            cin >> a[i][j];
+            st.insert(a[i][j]);
         }
-        maxi = max(tempMaxi,maxi);
     }
-    cout<<maxi<<nl;
+
+    int ans = 0;
+    for (auto &it: st) {
+        set<int> ss;
+        for (auto &ait : a) {
+            bool present = false;
+            for (auto &vit: ait) {
+                if (vit == it) {
+                    present = true;
+                    break;
+                }
+            }
+            if (!present) {
+                for (auto &vit : ait) {
+                    ss.insert(vit);
+                }
+            }
+        }
+        ans = max(ans, sz(ss)); 
+    }
+    cout << ans << nl;
 }
 
-int32_t main() {
+signed main() {
     
     ff();
     int tc;

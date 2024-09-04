@@ -8,8 +8,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -96,21 +96,25 @@ vi findFactors(int x){
 }
 void solve(){
     int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+    cin>>n;
+    if(n < 7){
+        pno
+        return;
     }
-    cout<<maxi<<nl;
+    for(int i=2; i*i <= n; i++){
+        int sum = 1;
+        int prev = 1;
+        while(sum < n){
+            prev *= i;
+            sum += prev;
+        }
+        if(sum == n){
+            pyes
+            return;
+        }
+
+    }
+    pno
 }
 
 int32_t main() {

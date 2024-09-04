@@ -96,21 +96,20 @@ vi findFactors(int x){
 }
 void solve(){
     int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+    cin>>n;
+    vi a(n),b(n);
+    input(0,n,a);
+    input(0,n,b);
+    vector<int>diff(n,0);
+    for(int i=0; i < n; ++i){
+        diff[i] = a[i]-b[i];
     }
-    cout<<maxi<<nl;
+    int maxi = *max_element(all(diff));
+    vi ans;
+    for(int i=0; i < n; i++)if(diff[i] == maxi)ans.push_back(i+1);
+    cout<<sz(ans)<<nl;
+    for(auto &it: ans)cout<<it<<" ";
+    cout<<nl;
 }
 
 int32_t main() {

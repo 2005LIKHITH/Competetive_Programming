@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -94,26 +95,38 @@ vi findFactors(int x){
     }
     return result;
 }
-void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+int mod_factorial(int n, int mod) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result = (result * i) % mod;
     }
-    cout<<maxi<<nl;
+    return result;
 }
 
-int32_t main() {
+
+void solve(){
+    string s;
+    cin>>s;
+    // vi del;
+    int del = 0;
+    int move = 1;
+    int ans = 0;
+    // int ans = 1;
+    for(int i=0; i < sz(s); i++){
+        int cons = 1;
+        while(i+1 < sz(s) && s[i] == s[i+1])cons++,i++;
+        if(cons > 1) del += (cons-1),move = mod_mul(move,cons,MOD1);
+
+    }
+    // ans = move;
+    //deletinos can be done in del! factorial time right ? 
+    for(int i=del; i >= 1; i--){
+        move = mod_mul(move,i,MOD1);
+    }
+    cout<<del<<" "<<move<<nl;
+}
+
+signed main() {
     
     ff();
     int tc;

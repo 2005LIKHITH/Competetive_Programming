@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -95,25 +96,38 @@ vi findFactors(int x){
     return result;
 }
 void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
-    }
-    cout<<maxi<<nl;
-}
+	
+	int n;
+	cin>>n;
+	vector<int>arr(n);
+	for(auto &it:arr)cin>>it;
+	if(n==1){
+		cout<<1<<endl;return;
+	}
+	sort(all(arr));
+	map<int,int>hashh;
+	for(auto &it:arr)hashh[it]++;
+	int g=0;
+	int maxi=*max_element(all(arr));
+	for(auto it:arr){
+		g=__gcd(maxi-it,g);
+	}
+	int val=maxi+g;
+	for(auto it:arr){
+		if(hashh[it-g]==0){
+			val=it-g;
+		}
+	}
+	arr.push_back(val);
 
-int32_t main() {
+	int ans=0;
+	
+	for(auto it:arr){
+		ans+=(abs(maxi-it)/g);
+	}
+	cout<<ans<<endl;
+}
+signed main() {
     
     ff();
     int tc;

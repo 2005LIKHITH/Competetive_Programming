@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -95,25 +96,85 @@ vi findFactors(int x){
     return result;
 }
 void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+    int n, m;
+    cin >> n >> m;
+
+    int ans[n][m];
+
+    vector<int> perm(m - 1, 0);
+
+    for (int i = 0; i < m - 1; i++) {
+        perm[i] = i + 1;
     }
-    cout<<maxi<<nl;
+
+    if (n >= m) {
+        if (m == 1) {
+            cout << "0" << endl;
+        } else {
+            cout << m << endl;
+        }
+
+        for (int i = 0; i < m; i++) {
+            int j = i + 1;
+            j %= m;
+            int cnt = 0;
+            int x = 0;
+            while (cnt <= (m - 1)) {
+                if (j != i) {
+                    ans[x][i] = j;
+                }
+                j++;
+                j %= m;
+                x++;
+                cnt++;
+            }
+        }
+
+        for (int i = m - 1; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                ans[i][j] = (j + 1) % m;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                cout << ans[i][j] << " ";
+            }
+            cout << endl;
+        }
+
+    } else {
+        cout << n + 1 << endl;
+
+        for (int i = 0; i < m; i++) {
+            int j = i + 1;
+            j %= m;
+            int cnt = 0;
+            int x = 0;
+            while (cnt <= (n - 1)) {
+                if (j != i) {
+                    ans[x][i] = j;
+                }
+                j++;
+                j %= m;
+                x++;
+                cnt++;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                cout << ans[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+
+
+
 }
 
-int32_t main() {
+signed main() {
     
     ff();
     int tc;

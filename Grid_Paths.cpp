@@ -12,7 +12,7 @@ void solve() {
     int n;
     cin >> n;
     vector<vector<char>> grid(n, vector<char>(n));
-    vector<vector<int>> dp(n, vector<int>(n, 0));
+    vector<vector<int>> dp(n, vector<int>(n));
 
 
     for(int i=0; i < n; i++){
@@ -37,7 +37,7 @@ void solve() {
     for(int i=0; i < n; i++){
         for(int j=0; j < n; j++){
             if(i == 0 && j == 0)continue;
-            if(grid[i][j] == '*')dp[i][j] = 0;
+            if(grid[i][j] == '*')continue;
             else{
                 int ans1 = i > 0 ? dp[i-1][j]: 0;
                 int ans2 = j > 0 ? dp[i][j-1]:0;

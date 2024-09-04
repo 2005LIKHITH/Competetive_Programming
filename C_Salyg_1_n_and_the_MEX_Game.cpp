@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -94,26 +95,38 @@ vi findFactors(int x){
     }
     return result;
 }
-void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+int mod_factorial(int n, int mod) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result = (result * i) % mod;
     }
-    cout<<maxi<<nl;
+    return result;
 }
 
-int32_t main() {
+int mex(vector<int> const& A) {
+    set<int> b(A.begin(), A.end());
+
+    int result = 0;
+    while (b.count(result))
+        ++result;
+    return result;
+}
+void solve(){
+    int n;
+    cin>>n;
+    vi a(n);
+    input(0,n,a);
+    int _mex = mex(a);
+    int cnt = 0;
+    while(cnt <= 2*n+1 && _mex != -1){
+        cout<<_mex<<endl;
+        cin>>_mex;
+        if(_mex == -1)break;
+        cnt++;
+    }
+}
+
+signed main() {
     
     ff();
     int tc;

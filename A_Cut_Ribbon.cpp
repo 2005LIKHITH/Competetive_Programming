@@ -1,6 +1,7 @@
+
 #include <bits/stdc++.h>
 using namespace std;
-
+#define pb push_back
 // Speed
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -94,33 +95,52 @@ vi findFactors(int x){
     }
     return result;
 }
-void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+int mod_factorial(int n, int mod) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result = (result * i) % mod;
     }
-    cout<<maxi<<nl;
+    return result;
 }
 
-int32_t main() {
+int mex(vector<int> const& A) {
+    set<int> b(A.begin(), A.end());
+
+    int result = 0;
+    while (b.count(result))
+        ++result;
+    return result;
+}
+int dp[4005];
+
+int solveDp(int n, int a, int b, int c) {
+    if (n == 0) return 0;
+    if (n < 0) return -1e18;
+    if (dp[n] != -1) return dp[n];
+     dp[n] =  1+max({solveDp(n-a, a, b, c), solveDp(n-b, a, b, c), solveDp(n-c, a, b, c)});
+    return dp[n];
+}
+
+void solve() {
+    int n, a, b, c;
+    cin >> n >> a >> b >> c;
+    memset(dp, -1, sizeof(dp));
+    cout<<solveDp(n,a,b,c);
+}
+
+
+
+
+signed main() {
     
     ff();
     int tc;
-    cin >> tc;
-    // tc = 1;
+    // cin >> tc;
+    tc = 1;
     while (tc--) {
+        // cout<<"#TEST CASE:"<<tc<<nl;
         solve();
+
     }
     return 0;
 }

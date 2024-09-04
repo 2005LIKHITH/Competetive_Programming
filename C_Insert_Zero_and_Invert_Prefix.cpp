@@ -1,6 +1,7 @@
+
 #include <bits/stdc++.h>
 using namespace std;
-
+#define pb push_back
 // Speed
 #define ff() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
@@ -8,8 +9,8 @@ using namespace std;
 #define int long long int
 #define vi vector<int>
 #define vc vector<char>
-#define pyes cout << "YES";
-#define pno cout << "NO";
+#define pyes cout << "YES"<<'\n';
+#define pno cout << "NO"<<'\n';
 
 #define all(x) (x).begin(), (x).end()
 #define MOD (int)(1e9 + 7)
@@ -94,33 +95,69 @@ vi findFactors(int x){
     }
     return result;
 }
-void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+int mod_factorial(int n, int mod) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result = (result * i) % mod;
     }
-    cout<<maxi<<nl;
+    return result;
 }
 
-int32_t main() {
-    
-    ff();
-    int tc;
-    cin >> tc;
-    // tc = 1;
-    while (tc--) {
-        solve();
-    }
-    return 0;
+int mex(vector<int> const& A) {
+    set<int> b(A.begin(), A.end());
+
+    int result = 0;
+    while (b.count(result))
+        ++result;
+    return result;
 }
+void solve(){
+    int n;
+    cin>>n;
+    vi a(n);
+    input(0,n,a);
+    reverse(all(a));
+    vi rez;
+    int cnt = 1;
+    if(a[0] == 1){
+        pno
+        return;
+    }
+    pyes
+    for(int i=1; i < n; i++){
+        if(a[i] != a[i-1]){
+            rez.push_back(cnt);
+            cnt = 1;
+
+        }else cnt++;
+    }
+    rez.push_back(cnt);
+    for(int i=0; i < sz(rez); i+= 2){
+        //Aage aur array hai tho that means there are other ones
+        if(i+1 < sz(rez)){
+            for(int j=0; j < rez[i]-1; j++)cout<<"0"<<" ";
+            for(int j=0; j < rez[i+1]; j++)cout<<"0"<<" ";
+            cout<<rez[i+1]<<" ";
+        }
+        else{
+            for(int j=0; j < rez[i]; j++)cout<<"0"<<" ";
+        }
+        
+    }
+    cout<<nl;
+}
+
+
+
+    signed main() {
+        
+        ff();
+        int tc;
+        cin >> tc;
+        // tc = 1;
+        while (tc--) {
+            // cout<<"#TEST CASE:"<<tc<<nl;
+            solve();
+        }
+        return 0;
+    }

@@ -26,12 +26,18 @@ using namespace std;
 #define nl '\n'
 #define sp " "
 
+
+//------------------------------------------------------------------------------------------------------------------
+
+// XOR(A to B) = XOR(0 to B) ⊕ XOR(0 to A−1) => we can find that 0 to X using %4 Pattern
+
 int mod_add(int a, int b, int m) { a = a % m; b = b % m; return (((a + b) % m) + m) % m; }
 int mod_mul(int a, int b, int m) { a = a % m; b = b % m; return (((a * b) % m) + m) % m; }
 int mod_sub(int a, int b, int m) { a = a % m; b = b % m; return (((a - b) % m) + m) % m; }
 
 int expo(int a, int b, int mod) { int res = 1; while (b > 0) { if (b & 1) res = (res * a) % mod; a = (a * a) % mod; b = b >> 1; } return res; }
 
+// To get All Prime Factors
 vi primeFactorization(int n) {
     vi factorization;
     for (int d = 2; d * d <= n; d++) {
@@ -46,6 +52,7 @@ vi primeFactorization(int n) {
     return factorization;
 }
 
+// Sieve of Eratosthenes function
 vi sieve(int limit) {
     vi primes;
     vector<bool> is_prime(limit + 1, true);
@@ -61,13 +68,15 @@ vi sieve(int limit) {
     return primes;
 }
 
+// Get Binary 
 string getBinary(int n) {
     bitset<8> b(n);
     return b.to_string();
 }
 
+// Kadane's algorithm
 int maxSubarraySum(int arr[], int n) {
-    int maxi = INT_MIN;
+    int maxi = INT_MIN; // maximum sum
     int sum = 0;
 
     for (int i = 0; i < n; i++) {
@@ -77,47 +86,25 @@ int maxSubarraySum(int arr[], int n) {
             maxi = sum;
         }
 
+        // If sum < 0: discard the sum calculated
         if (sum < 0) {
             sum = 0;
         }
     }
     return maxi;
 }
-vi findFactors(int x){
-    vi result;
-    for(int i=1; i*i <= x; i++){
-        if(x%i == 0){
-            result.push_back(i);
-            if(x/i != i)result.push_back(x/i);
-        }
-        
-    }
-    return result;
-}
-void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
-    map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
-    }
-    cout<<maxi<<nl;
+
+void solve() {
+    int a,b;
+    cin>>a>>b;
+    cout<<abs(b-a)<<nl;
 }
 
+
 int32_t main() {
-    
     ff();
     int tc;
-    cin >> tc;
+     cin >> tc;
     // tc = 1;
     while (tc--) {
         solve();

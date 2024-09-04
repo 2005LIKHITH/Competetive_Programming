@@ -91,58 +91,38 @@ int maxSubarraySum(int arr[], int n) {
     return maxi;
 }
 
-bool isValid(int prev,int m){
-    return (prev >= 1 && prev <= m);
-}
-
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    //Test case to understand: 0 3 0 4 0 5
-    vi a(n);
+    int n;
+    cin>>n;
+    vi pre(n,0);
+    vi a(n,0);
     input(0,n,a);
-    vector<vector<int>>dp(n+1,vector<int>(m+1,0));
-    /*
-        Finding overlapping subproblems
-
-        State: dp[i][k] = the number of valid ways we can put numvers when we are at dp[i][k]
-
-        when you are at k you can placee the prev values as k-1 k k+1
-        if the element has zero then it is possible then 1
-        if the element is the element required then 1
-        else it will be 0
-        
-        the number(i) which is not zero or k then it is not possible to start from there so just do something
+    pre[0] = a[0];
+    for(int i=1; i < n; i++)pre[i] = pre[i-1]+a[i];
     
+    vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+    // What will be the state: dp[i][j] = the maximum value i can get from this segment by taking first or the last one
+    //dp[i][j] = max(a[i]+dp[i+1][j]+sum[j]-sum[i], a[j]+sum[j-1]-sum[i-1]+dp[i][j-1])
+    //Base case will be that when i and j are equal then just you will get that particalualr value at that index
+    //if they are greater then just continue
+    //to calculate dp we are depenedent on the previous values so we will start from 0 to n
 
-    */
-   //base case if you are on the first index and the last element
-   for(int i=1; i <= m; i++){
-        if(a[0] == 0 || a[0] == i)dp[1][i] = 1;
-   }
-   for(int i=2; i <= n; i++){
-        for(int j=1; j <= m; j++){
-            if((a[i-1] != 0 && a[i-1] != j)){
-                dp[i][j] = 0;   
-                continue;
+    for(int i=n-1; i >= 0; i--){
+        for(int j=0; j < n; j++){
+            
+            if(i > j)continue;
+            if(i == j)dp[i][j] = a[i];
+            else {
+                int sum = pre[j] - (i > 0 ? pre[i-1] : 0);
+                dp[i][j] = max( (sum  - dp[i+1][j]), 
+                                (sum  - dp[i][j-1]));
             }
 
-            for(int prev = j-1; prev <= j+1; prev++){
-                if(!(isValid(prev,m)))continue;
-                dp[i][j] = (dp[i][j]+dp[i-1][prev])%MOD;
-            }
+
         }
-   }
-   int ans = 0;
-
-   //Too big for me as of now
-
-    for(int i=1; i <= m; i++){
-        ans =  (ans+dp[n][i])%MOD;
     }
-    cout<<ans<<nl;
+    cout<<dp[0][n-1]<<nl;
 }
-
 int32_t main(){
     ff();
     int tc;

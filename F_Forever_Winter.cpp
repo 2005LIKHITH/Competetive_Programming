@@ -95,22 +95,28 @@ vi findFactors(int x){
     return result;
 }
 void solve(){
-    int n;
-    cin >> n;
-    vi a(n);
-    input(0, n, a);
-    int maxi = 0;
+    //Dont get afraid of seeing a graph or a tree in a question 
+  
+    int n,m;
+    cin>>n>>m;
     map<int,int>mp;
-    for(auto &it : a)mp[it]++;
-    for(int i=n; i >= 1; i--){
-        int tempMaxi = 0;
-        vi temp = findFactors(i);
-        for(auto &it: temp){
-            if(mp.find(it) != mp.end())tempMaxi += mp[it];
-        }
-        maxi = max(tempMaxi,maxi);
+    for(int i=0; i < m; i++){
+        int a,b;
+        cin>>a>>b;
+        mp[a]++;
+        mp[b]++;
     }
-    cout<<maxi<<nl;
+    int outerNodes = 0;
+    for(auto &it: mp){
+        if(it.second == 1)outerNodes++;
+
+    }
+    int inNodes = m-outerNodes;
+    cout<<inNodes<<" "<<outerNodes/inNodes<<nl;
+
+
+
+
 }
 
 int32_t main() {
